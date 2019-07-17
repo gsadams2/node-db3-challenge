@@ -1,19 +1,19 @@
-const express = require('express');
+const express = require("express");
 
-const Schemes = require('./scheme-model.js');
+const Schemes = require("./scheme-model.js");
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const schemes = await Schemes.find();
     res.json(schemes);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to get schemes' });
+    res.status(500).json({ message: "Failed to get schemes" });
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -22,14 +22,14 @@ router.get('/:id', async (req, res) => {
     if (scheme) {
       res.json(scheme);
     } else {
-      res.status(404).json({ message: 'Could not find scheme with given id.' })
+      res.status(404).json({ message: "Could not find scheme with given id." });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to get schemes' });
+    res.status(500).json({ message: "Failed to get schemes" });
   }
 });
 
-router.get('/:id/steps', async (req, res) => {
+router.get("/:id/steps", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -38,27 +38,29 @@ router.get('/:id/steps', async (req, res) => {
     if (steps.length) {
       res.json(steps);
     } else {
-      res.status(404).json({ message: 'Could not find steps for given scheme' })
+      res
+        .status(404)
+        .json({ message: "Could not find steps for given scheme" });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to get steps' });
+    res.status(500).json({ message: "Failed to get steps" });
   }
 });
 
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const schemeData = req.body;
 
   try {
     const scheme = await Schemes.add(schemeData);
     res.status(201).json(scheme);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to create new scheme' });
+    res.status(500).json({ message: "Failed to create new scheme" });
   }
 });
 
-router.post('/:id/steps', async (req, res) => {
+router.post("/:id/steps", async (req, res) => {
   const stepData = req.body;
-  const { id } = req.params; 
+  const { id } = req.params;
 
   try {
     const scheme = await Schemes.findById(id);
@@ -67,14 +69,14 @@ router.post('/:id/steps', async (req, res) => {
       const step = await Schemes.addStep(stepData, id);
       res.status(201).json(step);
     } else {
-      res.status(404).json({ message: 'Could not find scheme with given id.' })
+      res.status(404).json({ message: "Could not find scheme with given id." });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to create new step' });
+    res.status(500).json({ message: "Failed to create new step" });
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
 
@@ -85,14 +87,14 @@ router.put('/:id', async (req, res) => {
       const updatedScheme = await Schemes.update(changes, id);
       res.json(updatedScheme);
     } else {
-      res.status(404).json({ message: 'Could not find scheme with given id' });
+      res.status(404).json({ message: "Could not find scheme with given id" });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to update scheme' });
+    res.status(500).json({ message: "Failed to update scheme" });
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -101,10 +103,10 @@ router.delete('/:id', async (req, res) => {
     if (deleted) {
       res.json({ removed: deleted });
     } else {
-      res.status(404).json({ message: 'Could not find scheme with given id' });
+      res.status(404).json({ message: "Could not find scheme with given id" });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to delete scheme' });
+    res.status(500).json({ message: "Failed to delete scheme" });
   }
 });
 
