@@ -6,7 +6,8 @@ module.exports = {
   findSteps,
   add,
   update,
-  remove
+  remove,
+  addStep
 };
 
 function find() {
@@ -81,4 +82,14 @@ function remove(id) {
     .then(id => {
       return findById(id);
     });
+}
+
+// addStep(step, scheme_id): This method expects a step
+// object and a scheme id. It inserts the new step
+// into the database, correctly linking it to the
+// intended scheme.You may use POST /api/schemes/:id/addStep
+// to test this method.
+
+function addStep(step, scheme_id) {
+  return db("steps").insert({ ...step, scheme_id });
 }
